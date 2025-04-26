@@ -14,7 +14,7 @@ class Post extends Database {
 
     // Fetch all posts
     public function getPosts() {
-        $sql = "SELECT * FROM posts";
+        $sql = "SELECT * FROM posts ORDER BY date_posted DESC"; // Order by date_posted
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -22,7 +22,7 @@ class Post extends Database {
 
     // Fetch posts by a specific user
     public function getPostsByLoggedInUser($id) {
-        $sql = "SELECT * FROM posts WHERE author_id = :id";
+        $sql = "SELECT * FROM posts WHERE author_id = :id ORDER BY date_posted DESC"; // Order by date_posted
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
             'id' => $id
@@ -32,7 +32,8 @@ class Post extends Database {
 
     // Add a new post
     public function addPost($data) {
-        $sql = "INSERT INTO posts (title, content, author_id) VALUES (:title, :content, :author_id)";
+        $sql = "INSERT INTO posts (title, content, author_id, date_posted) 
+                VALUES (:title, :content, :author_id, NOW())"; // Use NOW() for the current timestamp
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
             'title' => $data['title'],
@@ -43,27 +44,37 @@ class Post extends Database {
         header('Location: index.php');
         exit;
     }
+    // Fetch a post by ID
+public function getPostById($post_id) {
+    $sql = "SELECT * FROM posts WHERE post_id = :post_id";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([
+        'post_id' => $post_id
+    ]);
+    return $stmt->fetch(\PDO::FETCH_ASSOC);
+}
 
-    // Update user information (not posts)
-    public function update($data) {
-        $sql = "UPDATE users SET name = :name, email = :email, password = :password WHERE id = :id";
+
+    // Update a post
+    public function updatePost($data) {
+        $sql = "UPDATE posts SET title = :title, content = :content WHERE post_id = :post_id";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
-            'id' => $data['id'],
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => $data['password']
+            'title' => $data['title'],
+            'content' => $data['content'],
+            'post_id' => $data['post_id']
         ]);
-        return "Record UPDATED successfully";
+        return "Post updated successfully!";
     }
 
-    // Delete a user (not posts)
-    public function delete($id) {
-        $sql = "DELETE FROM users WHERE id = :id";
+    // Delete a post
+    public function deletePost($post_id) {
+        $sql = "DELETE FROM posts WHERE post_id = :post_id";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
-            'id' => $id
+            'post_id' => $post_id
         ]);
-        return "Record DELETED successfully";
+        return "Post deleted successfully!";
+        
     }
 }

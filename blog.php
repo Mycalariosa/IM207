@@ -5,6 +5,7 @@ use Aries\Dbmodel\Models\Post;
 
 session_start();
 
+// Redirect to login if not logged in
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
     exit();
@@ -16,7 +17,7 @@ $title = '';
 $content = '';
 $editing = false;
 
-// Handle edit
+// Check if editing an existing post
 if (isset($_GET['edit'])) {
     $postId = $_GET['edit'];
     $existingPost = $post->getPostById($postId);
@@ -31,7 +32,7 @@ if (isset($_GET['edit'])) {
     }
 }
 
-// Handle submit
+// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = [
         'title' => trim($_POST['title']),
@@ -64,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .button { background-color: #000; color: #fff; padding: 12px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer; }
         .button:hover { background-color: #333; }
         .back-link { text-align: center; margin-top: 20px; }
-        .back-link a { color: #000; font-weight: bold; }
+        .back-link a { color: #000; font-weight: bold; text-decoration: none; }
     </style>
 </head>
 <body>
