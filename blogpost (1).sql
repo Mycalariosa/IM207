@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 26, 2025 at 02:00 PM
+-- Generation Time: Apr 26, 2025 at 03:47 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -41,17 +41,7 @@ CREATE TABLE `posts` (
 
 INSERT INTO `posts` (`post_id`, `title`, `content`, `author_id`, `date_posted`) VALUES
 (14, 'mica', 'mica', 125, '2025-04-26 03:28:39'),
-(15, 'mica and bush', 'hello', 125, '2025-04-26 09:23:42'),
-(16, 'dasd', 'adsad', 125, '2025-04-26 11:22:27'),
-(17, 'dasd', 'dasd', 125, '2025-04-26 11:27:07'),
-(18, 'dasfdd', 'dfad', 125, '2025-04-26 11:27:51'),
-(19, 'dasd', 'dasdasf', 125, '2025-04-26 11:30:01'),
-(20, 'dasda', 'ddasda', 125, '2025-04-26 11:34:22'),
-(21, 'fgafad', 'fsdfsafa', 125, '2025-04-26 11:34:41'),
-(22, 'hagadgdadf', 'afagag', 125, '2025-04-26 11:45:06'),
-(23, 'hagadgdadf', 'afagag', 125, '2025-04-26 11:45:10'),
-(24, 'dasd', 'asdasdaf', 125, '2025-04-26 11:56:59'),
-(25, 'hadghafgda', 'gadgagd', 125, '2025-04-26 11:57:08');
+(15, 'mica and bush', 'hello', 125, '2025-04-26 09:23:42');
 
 -- --------------------------------------------------------
 
@@ -104,7 +94,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `users`
