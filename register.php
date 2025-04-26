@@ -47,8 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Register</title>
     <link rel="stylesheet" href="assets/css/styles.css">
     <style>
-        body {
+        * {
             font-family: Arial, sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
             background: #f8f9fa;
             display: flex;
             justify-content: center;
@@ -70,8 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         input[type="text"],
-        input[type="password"],
-        input[type="submit"] {
+        input[type="password"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
@@ -86,7 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .message a {
-            color:rgb(219, 225, 230);
+            color: black;
+            font-weight: bold;
             text-decoration: none;
         }
 
@@ -94,26 +98,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             text-decoration: underline;
         }
 
-        input[type="submit"] {
-            background-color:rgb(0, 0, 0);
-            color: white;
-            cursor: pointer;
-            border: none;
-        }
-        a{
-            color: white;
-            background: black;
+        .button {
+            display: block;
+            width: 100%;
             padding: 10px;
             text-align: center;
+            background: black;
+            color: white;
+            border: none;
             border-radius: 4px;
-            font-size: 12;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-bottom: 10px;
         }
 
-        input[type="submit"]:hover {
-            background-color:rgb(0, 0, 0);
+        .button:hover {
+            background: #333;
         }
-
-
     </style>
 </head>
 <body>
@@ -128,8 +130,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="text" name="last_name" placeholder="Last Name" value="<?php echo htmlspecialchars($_POST['last_name'] ?? ''); ?>" required>
         <input type="text" name="username" placeholder="Username" value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>" required>
         <input type="password" name="password" placeholder="Password" required>
-        <input type="submit" name="submit" value="Register">
-        <a href = "login.php" > Login </a>
+
+        <button type="submit" name="submit" class="button">Submit</button>
+        <a href="login.php" class="button">Login</a>
     </form>
 </body>
 </html>

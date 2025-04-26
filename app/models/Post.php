@@ -4,7 +4,6 @@ namespace Aries\Dbmodel\Models;
 
 use Aries\Dbmodel\Includes\Database;
 
-
 class Post extends Database {
     private $db;
 
@@ -13,6 +12,7 @@ class Post extends Database {
         $this->db = $this->getConnection(); // Get the connection instance
     }
 
+    // Fetch all posts
     public function getPosts() {
         $sql = "SELECT * FROM posts";
         $stmt = $this->db->prepare($sql);
@@ -20,6 +20,7 @@ class Post extends Database {
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    // Fetch posts by a specific user
     public function getPostsByLoggedInUser($id) {
         $sql = "SELECT * FROM posts WHERE author_id = :id";
         $stmt = $this->db->prepare($sql);
@@ -29,19 +30,21 @@ class Post extends Database {
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function addPost() {
+    // Add a new post
+    public function addPost($data) {
         $sql = "INSERT INTO posts (title, content, author_id) VALUES (:title, :content, :author_id)";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
-            'title' => $_POST['title'],
-            'content' => $_POST['content'],
-            'author_id' => $_POST['author_id']
+            'title' => $data['title'],
+            'content' => $data['content'],
+            'author_id' => $data['author_id']
         ]);
-        
+
         header('Location: index.php');
         exit;
     }
 
+    // Update user information (not posts)
     public function update($data) {
         $sql = "UPDATE users SET name = :name, email = :email, password = :password WHERE id = :id";
         $stmt = $this->db->prepare($sql);
@@ -54,6 +57,7 @@ class Post extends Database {
         return "Record UPDATED successfully";
     }
 
+    // Delete a user (not posts)
     public function delete($id) {
         $sql = "DELETE FROM users WHERE id = :id";
         $stmt = $this->db->prepare($sql);
@@ -61,5 +65,5 @@ class Post extends Database {
             'id' => $id
         ]);
         return "Record DELETED successfully";
-    }   
+    }
 }

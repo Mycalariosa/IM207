@@ -1,54 +1,41 @@
 <?php
-session_start();
-
 require_once 'vendor/autoload.php';
+
 use Aries\Dbmodel\Models\Post;
 
-// Redirect if user is not logged in
+session_start();
+
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
     exit();
 }
 
 $post = new Post();
-$posts = $post->getPosts();
+$posts = $post->getPostsByLoggedInUser($_SESSION['user']['id']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Mica's Blog</title>
+    <title>Your Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f8f9fa;
-            margin: 0;
-            padding: 20px;
         }
-
-        .container {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        h1, h2 {
+        .topbar {
+            background-color: #000;
+            color: white;
+            padding: 12px 20px;
             text-align: center;
-            color: #333;
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 1px;
         }
-
-        .logout {
-            text-align: right;
-            margin-bottom: 20px;
-        }
-
-        .logout form {
-            display: inline;
-        }
-
         .logout button {
-            background-color:rgb(12, 12, 12);
+            background-color: #000;
             color: white;
             border: none;
             padding: 8px 14px;
@@ -56,55 +43,76 @@ $posts = $post->getPosts();
             border-radius: 5px;
             cursor: pointer;
         }
-
         .logout button:hover {
-            background-color:rgb(5, 5, 5);
+            background-color: #333;
         }
-
-        ul {
-            padding: 0;
-            list-style-type: none;
-        }
-
-        li {
-            padding: 15px;
-            background-color: #fff;
-            margin-bottom: 10px;
-            border-left: 5px solid #3498db;
+        .sidebar {
+            background: #fff;
+            padding: 20px;
             border-radius: 5px;
             box-shadow: 0 1px 4px rgba(0,0,0,0.1);
         }
-
-        .no-posts {
-            text-align: center;
-            color: #777;
-            margin-top: 30px;
-        }
-        .container h1{
-            align: top;
+        .divider {
+            height: 1px;
+            background: #000;
+            margin: 20px 0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logout">
-            <form action="logout.php" method="POST">
-                <button type="submit">Logout</button>
-            </form>
-        </div>
 
-        <h1>Welcome to the Blog</h1>
-        <h2>Hello, <?php echo htmlspecialchars($_SESSION['user']['first_name']); ?>!</h2>
+<div class="topbar">
+    Mica's Blog Platform
+</div>
 
-        <ul>
+<div class="container py-4">
+    <div class="d-flex justify-content-end mb-3 logout">
+        <form action="logout.php" method="POST">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <h1 class="mb-3">Welcome to Your Blog!</h1>
+            <h5>Hello, <?php echo htmlspecialchars($_SESSION['user']['first_name']); ?>!</h5>
+
             <?php if (!empty($posts)): ?>
                 <?php foreach ($posts as $post): ?>
-                    <li><?php echo htmlspecialchars($post['title']); ?></li>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title"><?php echo htmlspecialchars($post['title']); ?></h5>
+                            <p class="card-text"><?php echo nl2br(htmlspecialchars($post['content'])); ?></p>
+                            <!-- Edit and Delete buttons are removed -->
+                        </div>
+                    </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <p class="no-posts">No blog posts found.</p>
+                <p class="text-muted">No posts found. Click the button to create one!</p>
             <?php endif; ?>
-        </ul>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="sidebar mb-4 text-center">
+                <h5>Search</h5>
+                <form class="d-flex mb-3" action="#" method="GET">
+                    <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
+                    <button class="btn btn-dark" type="submit">Go!</button>
+                </form>
+            </div>
+
+            <div class="divider"></div> <!-- Black line divider -->
+
+            <div class="sidebar text-center">
+                <h5>Create a New Post</h5>
+                <p>Start sharing your thoughts and stories.</p>
+                <a href="blog.php" class="btn btn-dark">+ New Post</a>
+            </div>
+        </div>
     </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html>
+</html>  
